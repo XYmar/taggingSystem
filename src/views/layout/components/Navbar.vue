@@ -10,11 +10,18 @@
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
         <router-link class="inlineBlock" to="/">
           <el-dropdown-item>
-            Home
+            主页
           </el-dropdown-item>
         </router-link>
         <el-dropdown-item divided>
-          <span @click="logout" style="display:block;">LogOut</span>
+          <span style="display:block;">导入</span>
+        </el-dropdown-item>
+        <el-dropdown-item divided>
+          <span style="display:block;">导出</span>
+        </el-dropdown-item>
+
+        <el-dropdown-item divided>
+          <span @click="logout" style="display:block;">退出登录</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
