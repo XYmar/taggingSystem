@@ -42,6 +42,7 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/example/table',
     name: 'Example',
+    hidden: true,
     meta: { title: 'Example', icon: 'example' },
     children: [
       {
@@ -62,12 +63,52 @@ export const constantRouterMap = [
   {
     path: '/form',
     component: Layout,
+    hidden: true,
     children: [
       {
         path: 'index',
         name: 'Form',
         component: () => import('@/views/form/index'),
         meta: { title: 'Form', icon: 'form' }
+      }
+    ]
+  },
+
+  {
+    path: '/tag',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Tag',
+        component: () => import('@/views/tag/index'),
+        meta: { title: '标注', icon: 'form' }
+      }
+    ]
+  },
+
+  {
+    path: '/check',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Check',
+        component: () => import('@/views/check/index'),
+        meta: { title: '审阅', icon: 'example' }
+      }
+    ]
+  },
+
+  {
+    path: '/conflict',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Conflict',
+        component: () => import('@/views/conflict/index'),
+        meta: { title: '冲突', icon: 'bug' }
       }
     ]
   },
