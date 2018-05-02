@@ -15,6 +15,9 @@ import store from './store'
 import '@/icons' // icon
 import '@/permission' // permission control
 
+import countTo from 'vue-count-to'
+Vue.component('countTo', countTo)
+
 Vue.use(ElementUI, { locale })
 
 Vue.config.productionTip = false
