@@ -22,9 +22,13 @@
           登录
         </el-button>
       </el-form-item>
-      <div class="tips">
+     <!-- <div class="tips">
         <span style="margin-right:20px;">用户名: admin</span>
         <span> 密码: admin</span>
+      </div>-->
+      <div class="register-container">
+        <span class="register-tips">没有账号？</span>
+        <span class="register-btn" @click="jumpToRegister">注册</span>
       </div>
     </el-form>
   </div>
@@ -86,6 +90,9 @@ export default {
           return false
         }
       })
+    },
+    jumpToRegister() {
+      this.$router.replace('/register')
     }
   }
 }
@@ -169,6 +176,18 @@ export default {
       position: absolute;
       right: 35px;
       bottom: 28px;
+    }
+    .register-container {
+      text-align: center;
+      font-size: 14px;
+      color: $light_gray;
+      .register-tips {
+        margin-right: 4px;
+      }
+      .register-btn {
+        color: #36a3f7;
+        cursor: pointer;
+      }
     }
   }
 </style>
