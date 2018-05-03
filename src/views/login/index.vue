@@ -77,7 +77,12 @@ export default {
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
+        const username = this.loginForm.username
+        const password = this.loginForm.password
+        const expireDays = 30
         if (valid) {
+          this.setCookie('username', username, expireDays)
+          this.setCookie('password', password, expireDays)
           this.loading = true
           this.$store.dispatch('Login', this.loginForm).then(() => {
             this.loading = false
