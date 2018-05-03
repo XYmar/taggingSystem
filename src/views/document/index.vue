@@ -12,7 +12,8 @@
 
       <el-table-column label="标题" min-width="100">
         <template slot-scope="scope">
-          <span>{{scope.row.title}}</span>
+          <router-link class="titleHover" to="/tag/index">{{scope.row.title}}</router-link>
+          <!--<span>{{scope.row.title}}</span>-->
         </template>
       </el-table-column>
       <el-table-column width="150px" label="类型">
@@ -42,7 +43,7 @@
   import waves from '@/directive/waves' // 水波纹指令
   /* eslint-disable */
   export default {
-    name: 'tag',
+    name: 'document',
     directives: {
       waves
     },
@@ -103,4 +104,7 @@
 </script>
 
 <style scoped>
+  .titleHover:hover {
+    background: rgba(31, 26, 233, 0.34);
+  }
 </style>
