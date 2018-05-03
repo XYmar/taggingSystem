@@ -1,5 +1,5 @@
 import { login, logout, getInfo } from '@/api/login'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getToken, setToken, removeToken, setRoles } from '@/utils/auth'
 
 const user = {
   state: {
@@ -27,12 +27,25 @@ const user = {
   actions: {
     // 登录
     Login({ commit }, userInfo) {
+      console.log('loginStart')
       const username = userInfo.username.trim()
+      console.log(username)
+      console.log(userInfo)
       return new Promise((resolve, reject) => {
         login(username, userInfo.password).then(response => {
+          console.log('userInfo')
           const data = response.data
-          setToken(data.token)
-          commit('SET_TOKEN', data.token)
+          /* setToken(data.token) */
+          setToken(data.username)
+          commit('SET_TOKEN', data.username)
+          if (username === 'admin') {
+            commit('SET_ROLES', 'admin')
+            setRoles('admin')
+          } else {
+            commit('SET_ROLES', 'editor')
+            setRoles('editor')
+          }
+          console.log('settokensuccess')
           resolve()
         }).catch(error => {
           reject(error)
@@ -43,11 +56,12 @@ const user = {
     // 获取用户信息
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
+        console.log('GetInfoSuccess')
         getInfo(state.token).then(response => {
           const data = response.data
-          commit('SET_ROLES', data.roles)
-          commit('SET_NAME', data.name)
-          commit('SET_AVATAR', data.avatar)
+          commit('SET_ROLES', data.username)
+          commit('SET_NAME', data.username)
+          /* commit('SET_AVATAR', data.avatar) */
           resolve(response)
         }).catch(error => {
           reject(error)
