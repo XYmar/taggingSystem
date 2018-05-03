@@ -2,8 +2,8 @@ import router from './router'
 import store from './store'
 import NProgress from 'nprogress' // Progress 进度条
 import 'nprogress/nprogress.css'// Progress 进度条样式
-import { Message } from 'element-ui'
-import { getToken } from '@/utils/auth' // 验权
+/* import { Message } from 'element-ui'*/
+import { getToken, getRoles } from '@/utils/auth' // 验权
 
 const whiteList = ['/login', '/register'] // 不重定向白名单
 router.beforeEach((to, from, next) => {
@@ -13,7 +13,12 @@ router.beforeEach((to, from, next) => {
       next({ path: '/' })
       NProgress.done() // if current page is dashboard will not trigger	afterEach hook, so manually handle it
     } else {
-      if (store.getters.roles.length === 0) {
+      if (getRoles()) {
+        console.log(getRoles())
+        store.commit('SET_ROLES', getRoles())
+      }
+      next()
+      /* if (store.getters.roles.length === 0) {
         store.dispatch('GetInfo').then(res => { // 拉取用户信息
           next()
         }).catch(() => {
@@ -24,7 +29,7 @@ router.beforeEach((to, from, next) => {
         })
       } else {
         next()
-      }
+      }*/
     }
   } else {
     if (whiteList.indexOf(to.path) !== -1) {

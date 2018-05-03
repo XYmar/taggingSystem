@@ -23,6 +23,7 @@
       ])
     },
     created() {
+      console.log(this.roles, 'roles')
       if (!this.roles.includes('admin')) {
         this.currentRole = 'editorDashboard'
       }
