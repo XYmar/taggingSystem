@@ -13,3 +13,18 @@ export function documentList() {
     }
   })
 }
+
+export function importDocu(data) {
+  return request({
+    url: '/documents/import',
+    method: 'post',
+    auth: {
+      username: 'admin',
+      password: 'admin'
+    },
+    headers: {
+      'content-type': 'application/x-www-form-urlencoded'
+    },
+    data
+  })
+}
