@@ -7,26 +7,26 @@
         <span class="svg-container svg-container_login">
           <svg-icon icon-class="user" />
         </span>
-        <el-input name="username" type="text" autoComplete="on" placeholder="请输入用户名" />
+        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="请输入用户名" />
       </el-form-item>
       <el-form-item prop="password">
         <span class="svg-container">
-          <svg-icon icon-class="password"></svg-icon>
+          <svg-icon icon-class="password" />
         </span>
-        <el-input name="password" :type="pwdType" @keyup.enter.native="handleLogin" autoComplete="on"
-                  placeholder="请输入密码"></el-input>
+        <el-input name="password" :type="pwdType" v-model="loginForm.password" autoComplete="on"
+                  placeholder="请输入密码" />
         <span class="show-pwd" @click="showPwd"><svg-icon icon-class="eye" /></span>
       </el-form-item>
       <el-form-item prop="password">
         <span class="svg-container">
-          <svg-icon icon-class="password"></svg-icon>
+          <svg-icon icon-class="password" />
         </span>
-        <el-input name="password" :type="pwdType" @keyup.enter.native="handleLogin" autoComplete="on"
-                  placeholder="请再次输入密码"></el-input>
-        <span class="show-pwd" @click="showPwd"><svg-icon icon-class="eye" /></span>
+        <el-input name="password" :type="pwdConfirmType" v-model="loginForm.againPassword" @keyup.enter.native="registerUser" autoComplete="on"
+                  placeholder="请再次输入密码" />
+        <span class="show-pwd" @click="confirmPwd"><svg-icon icon-class="eye" /></span>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" style="width:100%;" :loading="loading" @click.native.prevent="handleLogin">
+        <el-button type="primary" style="width:100%;" :loading="loading" @click.native.prevent="registerUser">
           注册
         </el-button>
       </el-form-item>
@@ -40,7 +40,9 @@
 
 <script>
   import { isvalidUsername } from '@/utils/validate'
+  import { addUser } from '../../api/user'
 
+  /* eslint-disable */
   export default {
     name: 'login',
     data() {
@@ -52,23 +54,33 @@
         }
       }
       const validatePass = (rule, value, callback) => {
-        if (value.length < 5) {
-          callback(new Error('密码不能小于5位'))
+        if (value.length < 6) {
+          callback(new Error('密码不能小于6位'))
+        } else {
+          callback()
+        }
+      }
+      const validateConfirmPass = (rule, value, callback) => {
+        if (value.length < 6) {
+          callback(new Error('密码不能小于6位'))
         } else {
           callback()
         }
       }
       return {
         loginForm: {
-          username: 'admin',
-          password: 'admin'
+          username: '',
+          password: '',
+          againPassword: ''
         },
         loginRules: {
-          username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-          password: [{ required: true, trigger: 'blur', validator: validatePass }]
+          username: [{required: true, trigger: 'blur', validator: validateUsername}],
+          password: [{required: true, trigger: 'blur', validator: validatePass}],
+          againPassword: [{required: true, trigger: 'blur', validator: validateConfirmPass}]
         },
         loading: false,
-        pwdType: 'password'
+        pwdType: 'password',
+        pwdConfirmType: 'password'
       }
     },
     methods: {
@@ -79,11 +91,21 @@
           this.pwdType = 'password'
         }
       },
+      confirmPwd() {
+        if (this.pwdConfirmType === 'password') {
+          this.pwdConfirmType = ''
+        } else {
+          this.pwdConfirmType = 'password'
+        }
+      },
+      jumpToLogin() {
+        this.$router.replace('/login')
+      },
       handleLogin() {
         this.$refs.loginForm.validate(valid => {
           if (valid) {
             this.loading = true
-            this.$store.dispatch('Login', this.loginForm).then(() => {
+            this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
               this.loading = false
               this.$router.push({ path: '/' })
             }).catch(() => {
@@ -95,8 +117,33 @@
           }
         })
       },
-      jumpToLogin() {
-        this.$router.replace('/login')
+      registerUser: function() {
+        this.$refs.loginForm.validate(valid => {
+          if (valid) {
+            const qs = require('qs');
+            let data0 = {
+              'username': this.loginForm.username,
+              'password': this.loginForm.password
+            };
+            let data = qs.stringify(data0);
+            console.log("0");
+            addUser(data).then((res) => {
+              console.log("A");
+              this.$notify({
+                title: '成功',
+                message: '注册成功',
+                type: 'success',
+                duration: 2000
+              })
+              console.log("B");
+              this.$router.replace('/login')
+            })
+
+          }else {
+            console.log('error submit!!')
+            return false
+          }
+        })
       }
     }
   }
