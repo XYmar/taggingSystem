@@ -1,13 +1,13 @@
 <template>
   <div class="app-container calendar-list-container">
     <div class="filter-container">
-      <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="标题" v-model="listQuery.tagname">
+      <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="标题" v-model="searchQuery">
       </el-input>
 
       <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">搜索</el-button>
     </div>
 
-    <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row
+    <el-table :key='tableKey' :data="listA" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row
               style="width: 100%">
 
       <el-table-column label="标题" min-width="100">
@@ -29,6 +29,11 @@
 
     </el-table>
 
+    <div class="pagination-container">
+      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
+      </el-pagination>
+    </div>
+
   </div>
 </template>
 
@@ -44,17 +49,18 @@
     data() {
       return {
         tableKey: 0,
-        list: null,
+        list: [],
         total: null,
         listLoading: true,
         listQuery: {
           page: 1,
-          limit: 10,
+          limit: 5,
           tagname: ''
         },
         sortable: null,
         oldList: [],
-        newList: []
+        newList: [],
+        searchQuery: '',
       }
     },
     created() {
@@ -68,33 +74,29 @@
           this.total = response.data.total
           this.listLoading = false
           this.oldList = this.list.map(v => v.id);
-          this.newList = this.oldList.slice();
-          this.$nextTick(() => {
-            this.setSort()
-          })
+          this.newList = this.oldList.slice()
         })
+      },
+      handleSizeChange(val) {
+        this.listQuery.limit = val
+        this.getList()
+      },
+      handleCurrentChange(val) {
+        this.listQuery.page = val
+        this.getList()
       },
       handleFilter() {
         this.listQuery.page = 1;
         this.getList()
-      },
-      setSort() {
-        const el = document.querySelectorAll('.el-table__body-wrapper > table > tbody')[0]
-        this.sortable = Sortable.create(el, {
-          ghostClass: 'sortable-ghost', // Class name for the drop placeholder,
-          setData: function(dataTransfer) {
-            dataTransfer.setData('Text', '')
-            // to avoid Firefox bug
-            // Detail see : https://github.com/RubaXa/Sortable/issues/1012
-          },
-          onEnd: evt => {
-            const targetRow = this.list.splice(evt.oldIndex, 1)[0]
-            this.list.splice(evt.newIndex, 0, targetRow)
-            // for show the changes, you can delete in you code
-            const tempIndex = this.newList.splice(evt.oldIndex, 1)[0]
-            this.newList.splice(evt.newIndex, 0, tempIndex)
-          }
+      }
+    },
+    computed: {
+      listA: function () {
+        let self = this;
+        return self.list.filter(function (item) {
+          return item.title.toLowerCase().indexOf(self.searchQuery.toLowerCase()) !== -1;
         })
+
       }
     }
   }
