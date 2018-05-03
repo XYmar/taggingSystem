@@ -20,10 +20,11 @@ export function removeToken() {
   return Cookies.remove(TokenKey)
 }
 export function rolesFlag() {
-  if (Cookies.get(RolesKey) === 'admin') {
+/*  if (Cookies.get(RolesKey) === 'admin') {
     console.log(Cookies.get(RolesKey))
     return false
   } else {
     return true
-  }
+  }*/
+  return Cookies.get(RolesKey) !== 'admin'
 }
