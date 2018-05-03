@@ -73,13 +73,13 @@ export const constantRouterMap = [
   },
 
   {
-    path: '/tag',
+    path: '/document',
     component: Layout,
     children: [
       {
         path: 'index',
-        name: 'Tag',
-        component: () => import('@/views/tag/index'),
+        name: 'Document',
+        component: () => import('@/views/document/index'),
         meta: { title: '标注', icon: 'form' }
       }
     ]
