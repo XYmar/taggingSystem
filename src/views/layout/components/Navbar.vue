@@ -2,12 +2,12 @@
   <el-menu class="navbar" mode="horizontal">
     <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
     <breadcrumb></breadcrumb>
-    <div class="userNameContainer" style="display: inline-block; position: absolute;right:100px;">
+    <div class="userNameContainer">
       {{token}}
     </div>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
-        <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
+        <img class="user-avatar" src="./avatar.jpg">
         <i class="el-icon-caret-bottom"></i>
       </div>
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
@@ -58,7 +58,6 @@ export default {
       })*/
       this.$store.dispatch('FedLogOut').then(() => {
         this.$router.replace({ path: '/login' })
-        location.reload()
       })
     }
   }
@@ -81,6 +80,18 @@ export default {
     right: 90px;
     top: 16px;
     color: red;
+  }
+  .userNameContainer {
+    position:absolute;
+    display:inline-block;
+    right: 75px;
+    width:60px;
+    text-align: center;
+    font-size: 14px;
+    color: #97a8be;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
   .avatar-container {
     height: 50px;
