@@ -47,10 +47,39 @@ export function markdocument(id, data) {
     url: '/documents/' + id + '/mark',
     params: {
       documentId: id,
-      questions: data[0].question,
-      answers: data[0].answer
+      questions: data.question,
+      answers: data.answer
     },
     method: 'post',
+    auth: {
+      username: 'admin',
+      password: 'admin'
+    }
+  })
+}
+export function updateMark(id, data) {
+  return request({
+    url: '/marks/' + id,
+    params: {
+      MarkId: id,
+      question: data.question,
+      answer: data.answer
+    },
+    method: 'put',
+    auth: {
+      username: 'admin',
+      password: 'admin'
+    }
+  })
+}
+export function deleteMark(documentId, markId) {
+  return request({
+    url: '/documents/' + documentId + '/mark/' + markId,
+    params: {
+      documentId: documentId,
+      markId: markId
+    },
+    method: 'delete',
     auth: {
       username: 'admin',
       password: 'admin'
