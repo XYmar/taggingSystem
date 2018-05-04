@@ -31,16 +31,6 @@
               <el-button type="danger" style="float:right;margin-right: 18px;" @click="deleteTag(item.id)">删除</el-button>
               <el-button type="primary" style="float: right;margin-right: 10px;" @click="updateTag(item.id, item)">修改</el-button>
             </div>
-    <!--        <el-input style="width: 85%;margin-left: 10px" type="textarea"
-                      :autosize="{ minRows: 3}" placeholder="添加答案"
-                      v-model="item.question"
-            >
-            </el-input>
-            <el-input style="width: 85%;margin-left: 10px" type="textarea"
-                      :autosize="{ minRows: 3}" placeholder="添加答案"
-                      v-model="item.answer"
-            >
-            </el-input>-->
           </div>
 
       </div>
