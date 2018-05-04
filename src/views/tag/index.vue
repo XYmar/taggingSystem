@@ -4,6 +4,9 @@
       <el-button @click="addtags">添加标记</el-button>
       <el-button @click="saveAllTags">保存全部</el-button>
     </div>-->
+    <div class="btnContainer">
+      <el-button type="success" @click="commitTags">提交</el-button>
+    </div>
     <div class="articleContainer" style="width:65%;float:left;overflow:hidden;padding:6px;text-align: justify">
       <h3>{{this.document.title}}</h3>
       <p style="text-indent: 2em;line-height: 24px;font-size: 14px">{{this.document.content}}</p>
@@ -88,7 +91,7 @@
 </template>
 
 <script>
-  import { documentDetail, documentList, markdocument, updateMark, deleteMark } from '@/api/tagdocument'
+  import { documentDetail, documentList, markdocument, updateMark, deleteMark, commitdocument } from '@/api/tagdocument'
   /* eslint-disable */
   export default {
     name: 'tag',
@@ -102,7 +105,7 @@
           question: '',
           answer: ''
         },
-        markdata:[],
+        markdata:null,
         markList:null,
         dataAll: null
       }
@@ -150,17 +153,16 @@
       addtags () {
       },
       saveTags () {
-        this.markdata.push(
+        this.markdata =
           {
             question: this.input1.question,
             answer: this.input1.answer
-
           }
-        )
         markdocument(this.id, this.markdata).then(response => {
           console.log(response.data)
           this.input1.question = ''
           this.input1.answer = ''
+          this.markdata = {}
           this.getdocument()
           console.log(9999)
         })
@@ -172,6 +174,12 @@
       updateTag(id, item) {
         console.log(item.question)
         updateMark(id, item).then(response => {
+          this.$notify({
+            title: '成功',
+            message: '修改成功',
+            type: 'success',
+            duration: 2000
+          })
           console.log('updateSuccess')
         })
       },
@@ -181,6 +189,31 @@
           this.getdocument()
           console.log('deleteSuccess')
         })
+      },
+      commitTags() {
+        /*this.tagName = document.getElementsByName('tagName');
+        this.commitName = document.getElementsByName('commitName');
+
+        for(let i=0;i<this.tagName.length;i++){
+          console.log(this.tagName[i].value);
+        }*/
+
+        console.log(this.markList.length)
+        if(this.markList.length >= 5){
+          commitdocument(this.id).then(response => {
+            this.$message({
+              message: '提交成功',
+              type: 'success'
+            });
+            this.getdocument()
+          })
+        }else{
+          this.$message({
+            message: '请确保至少提交五个标记',
+            type: 'warning'
+          });
+        }
+
       }
     }
   }

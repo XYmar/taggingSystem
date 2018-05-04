@@ -47,8 +47,8 @@ export function markdocument(id, data) {
     url: '/documents/' + id + '/mark',
     params: {
       documentId: id,
-      questions: data[0].question,
-      answers: data[0].answer
+      questions: data.question,
+      answers: data.answer
     },
     method: 'post',
     auth: {
