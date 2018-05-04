@@ -17,7 +17,17 @@
           </el-dropdown-item>
         </router-link>
         <el-dropdown-item divided>
-          <span style="display:block;">导入</span>
+          <el-upload class="upload-demo"
+                     action=""
+                     :file-list="fileList"
+                     :httpRequest="uploadCom"
+                     :show-file-list="false"
+                     multiple>
+
+            <span style="display:block;">导入</span>
+
+          </el-upload>
+
         </el-dropdown-item>
         <el-dropdown-item divided>
           <span style="display:block;">导出</span>
@@ -35,11 +45,19 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
+import { importDocu } from '@/api/tagdocument'
+import { Loading } from 'element-ui';
 
+/* eslint-disable */
 export default {
   components: {
     Breadcrumb,
     Hamburger
+  },
+  data() {
+    return {
+      fileList: []
+    }
   },
   computed: {
     ...mapGetters([
@@ -51,6 +69,36 @@ export default {
   methods: {
     toggleSideBar() {
       this.$store.dispatch('ToggleSideBar')
+    },
+    uploadCom: function (file) {
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading'
+      });
+      let formData = new FormData();
+
+      console.log("导入组件文件----------");
+      console.log(file);
+
+      formData.append('file', file.file);
+
+      importDocu(formData).then(() => {
+        setTimeout(() => {
+          loading.close();
+        }, 2000);
+
+        this.$notify({
+          title: '成功',
+          message: '导入成功',
+          type: 'success',
+          duration: 2000
+        })
+
+      })
+        .catch(err => {
+          console.log(err);
+        })
     },
     logout() {
       /* this.$store.dispatch('LogOut').then(() => {
