@@ -7,8 +7,8 @@
             <svg-icon icon-class="form" class-name="card-panel-icon" />
           </div>
           <div class="card-panel-description">
-            <div class="card-panel-text">标注</div>
-            <count-to class="card-panel-num" :startVal="0" :endVal="81212" :duration="3000"></count-to>
+            <div class="card-panel-text">已标注</div>
+            <count-to class="card-panel-num" :startVal="0" :endVal="list.marked" :duration="3000"></count-to>
           </div>
         </div>
       </router-link>
@@ -20,8 +20,22 @@
             <svg-icon icon-class="example" class-name="card-panel-icon" />
           </div>
           <div class="card-panel-description">
-            <div class="card-panel-text">审阅</div>
-            <count-to class="card-panel-num" :startVal="0" :endVal="102400" :duration="2600"></count-to>
+            <div class="card-panel-text">已审阅</div>
+            <count-to class="card-panel-num" :startVal="0" :endVal="list.reviewed" :duration="2600"></count-to>
+          </div>
+        </div>
+      </router-link>
+    </el-col>
+
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <router-link to="/device/device">
+        <div class='card-panel' @click="handleSetLineChartData('newVisitis')">
+          <div class="card-panel-icon-wrapper icon-computer">
+            <svg-icon icon-class="documentation" class-name="card-panel-icon" />
+          </div>
+          <div class="card-panel-description">
+            <div class="card-panel-text">文章总数</div>
+            <count-to class="card-panel-num" :startVal="0" :endVal="list.all" :duration="2600"></count-to>
           </div>
         </div>
       </router-link>
@@ -31,14 +45,32 @@
 
 <script>
 import CountTo from 'vue-count-to'
+import { countList } from '@/api/dashboard'
 
 export default {
   components: {
     CountTo
   },
+  data() {
+    return {
+      tableKey: 0,
+      list: []
+    }
+  },
+  created() {
+    this.getList()
+  },
   methods: {
     handleSetLineChartData(type) {
       this.$emit('handleSetLineChartData', type)
+    },
+    getList() {
+      this.listLoading = true
+      countList(this.listQuery).then(response => {
+        this.list = response.data.data
+        console.log(this.list.all)
+        this.listLoading = false
+      })
     }
   }
 }
