@@ -87,3 +87,29 @@ export function deleteMark(documentId, markId) {
   })
 }
 
+export function commitdocument(id) {
+  return request({
+    url: '/documents/' + id + '/mark/release',
+    params: {
+      documentId: id
+    },
+    method: 'put',
+    auth: {
+      username: 'admin',
+      password: 'admin'
+    }
+  })
+}
+
+export function docDistribution(data) {
+  return request({
+    url: '/documents/distribution/mark/',
+    method: 'post',
+    auth: {
+      username: 'admin',
+      password: 'admin'
+    },
+    data
+  })
+}
+

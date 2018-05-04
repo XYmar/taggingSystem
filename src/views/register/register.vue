@@ -17,7 +17,7 @@
                   placeholder="请输入密码" />
         <span class="show-pwd" @click="showPwd"><svg-icon icon-class="eye" /></span>
       </el-form-item>
-      <el-form-item prop="password">
+      <el-form-item prop="againPassword">
         <span class="svg-container">
           <svg-icon icon-class="password" />
         </span>
@@ -39,7 +39,7 @@
 </template>
 
 <script>
-  import { isvalidUsername } from '@/utils/validate'
+  import { isvalidUsername, isvalidConfirmPass } from '@/utils/validate'
   import { addUser } from '../../api/user'
 
   /* eslint-disable */
@@ -52,21 +52,21 @@
         } else {
           callback()
         }
-      }
+      };
       const validatePass = (rule, value, callback) => {
         if (value.length < 6) {
           callback(new Error('密码不能小于6位'))
         } else {
           callback()
         }
-      }
+      };
       const validateConfirmPass = (rule, value, callback) => {
-        if (value.length < 6) {
-          callback(new Error('密码不能小于6位'))
+        if (value.length == 0) {
+          callback(new Error('请再次输入密码'))
         } else {
           callback()
         }
-      }
+      };
       return {
         loginForm: {
           username: '',
@@ -101,43 +101,37 @@
       jumpToLogin() {
         this.$router.replace('/login')
       },
-      handleLogin() {
-        this.$refs.loginForm.validate(valid => {
-          if (valid) {
-            this.loading = true
-            this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
-              this.loading = false
-              this.$router.push({ path: '/' })
-            }).catch(() => {
-              this.loading = false
-            })
-          } else {
-            console.log('error submit!!')
-            return false
-          }
-        })
-      },
       registerUser: function() {
         this.$refs.loginForm.validate(valid => {
           if (valid) {
-            const qs = require('qs');
-            let data0 = {
-              'username': this.loginForm.username,
-              'password': this.loginForm.password
-            };
-            let data = qs.stringify(data0);
-            console.log("0");
-            addUser(data).then((res) => {
-              console.log("A");
-              this.$notify({
-                title: '成功',
-                message: '注册成功',
-                type: 'success',
-                duration: 2000
+            console.log(this.loginForm.password);
+            console.log(this.loginForm.againPassword);
+            if(this.loginForm.password !== this.loginForm.againPassword){
+              this.$message({
+                message: '两次密码不一致',
+                type: 'error'
+              });
+            }else{
+              const qs = require('qs');
+              let data0 = {
+                'username': this.loginForm.username,
+                'password': this.loginForm.password
+              };
+              let data = qs.stringify(data0);
+              console.log("0");
+              addUser(data).then((res) => {
+                console.log("A");
+                this.$notify({
+                  title: '成功',
+                  message: '注册成功',
+                  type: 'success',
+                  duration: 2000
+                })
+                console.log("B");
+                this.$router.replace('/login')
               })
-              console.log("B");
-              this.$router.replace('/login')
-            })
+            }
+
 
           }else {
             console.log('error submit!!')
