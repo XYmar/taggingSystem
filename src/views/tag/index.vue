@@ -8,15 +8,37 @@
       <h3>{{this.document.title}}</h3>
       <p style="text-indent: 2em;line-height: 24px;font-size: 14px">{{this.document.content}}</p>
     </div>
-    <div id="tagContainer" class="tagsConatiner" style="width:32%;height:600px;float:right;border:1px solid #ccc;margin-top:30px;padding-top:10px">
+    <div id="tagContainer" class="tagsConatiner" style="width:32%;min-height:600px;float:right;border:1px solid #ccc;margin-top:30px;padding-top:10px">
       <div v-if="this.markList && this.markList.length > 0">
-         <el-table :key='tableKey' :data="markList">
-            <el-table-column slot-scope="scope">
-              <template>
-                <span>{{scope.row.question}}</span>
-              </template>
-            </el-table-column>
-          </el-table>
+          <div v-for="item in markList" style="margin-bottom: 10px">
+            <div class="questionContainer">
+              <span style="float:left;padding:4px 4px">Q:</span>
+              <el-input style="width: 85%;margin:0 0 10px 10px" type="textarea"
+                        :autosize="{ minRows: 1}" placeholder="添加标记"
+                        v-model="item.question"
+              >
+              </el-input>
+            </div>
+            <div class="answerContainer">
+              <span style="float:left;padding:4px 4px">A:</span>
+              <el-input style="width: 85%;margin-left: 10px" type="textarea"
+                        :autosize="{ minRows: 2}" placeholder="添加答案"
+                        v-model="item.answer"
+              >
+              </el-input>
+            </div>
+    <!--        <el-input style="width: 85%;margin-left: 10px" type="textarea"
+                      :autosize="{ minRows: 3}" placeholder="添加答案"
+                      v-model="item.question"
+            >
+            </el-input>
+            <el-input style="width: 85%;margin-left: 10px" type="textarea"
+                      :autosize="{ minRows: 3}" placeholder="添加答案"
+                      v-model="item.answer"
+            >
+            </el-input>-->
+          </div>
+
       </div>
       <div class="inputContainer" style="margin-bottom: 10px">
         <div class="questionContainer">
@@ -30,7 +52,7 @@
         <div class="answerContainer">
           <span style="float:left;padding:4px 4px">A:</span>
           <el-input style="width: 85%;margin-left: 10px" type="textarea"
-                    :autosize="{ minRows: 3}" placeholder="添加答案"
+                    :autosize="{ minRows: 2}" placeholder="添加答案"
                     v-model="input1.answer"
           >
           </el-input>
@@ -46,7 +68,7 @@
         <div class="answerContainer">
           <span style="float:left;padding:4px 4px">A:</span>
           <el-input style="width: 85%;margin-left: 10px" type="textarea"
-                    :autosize="{ minRows: 3}" placeholder="添加答案">
+                    :autosize="{ minRows: 2}" placeholder="添加答案">
           </el-input>
         </div>
       </div>
@@ -60,14 +82,10 @@
         <div class="answerContainer">
           <span style="float:left;padding:4px 4px">A:</span>
           <el-input style="width: 85%;margin-left: 10px" type="textarea"
-                    :autosize="{ minRows: 3}" placeholder="添加答案">
+                    :autosize="{ minRows: 2}" placeholder="添加答案">
           </el-input>
         </div>
       </div>
-    </div>
-    <hr>
-    <div>
-      {{markList}}
     </div>
   </div>
 </template>
