@@ -12,7 +12,7 @@
 
       <el-table-column label="标题" min-width="100">
         <template slot-scope="scope">
-          <router-link class="titleHover" to="/tag/index">{{scope.row.title}}</router-link>
+          <router-link class="titleHover" :to='{name:"Tag",params:{id:scope.row.id}}'>{{scope.row.title}}</router-link>
           <!--<span>{{scope.row.title}}</span>-->
         </template>
       </el-table-column>
