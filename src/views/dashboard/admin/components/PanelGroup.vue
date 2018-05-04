@@ -1,6 +1,19 @@
 <template>
   <el-row class="panel-group" :gutter="40">
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <router-link to="/device/device">
+        <div class='card-panel' @click="handleSetLineChartData('newVisitis')">
+          <div class="card-panel-icon-wrapper icon-computer">
+            <svg-icon icon-class="documentation" class-name="card-panel-icon" />
+          </div>
+          <div class="card-panel-description">
+            <div class="card-panel-text">文章总数</div>
+            <count-to class="card-panel-num" :startVal="0" :endVal="list.all" :duration="2600"></count-to>
+          </div>
+        </div>
+      </router-link>
+    </el-col>
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <router-link to="/components/index">
         <div class="card-panel" @click="handleSetLineChartData('messages')">
           <div class="card-panel-icon-wrapper icon-components1">
@@ -27,19 +40,6 @@
       </router-link>
     </el-col>
 
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <router-link to="/device/device">
-        <div class='card-panel' @click="handleSetLineChartData('newVisitis')">
-          <div class="card-panel-icon-wrapper icon-computer">
-            <svg-icon icon-class="documentation" class-name="card-panel-icon" />
-          </div>
-          <div class="card-panel-description">
-            <div class="card-panel-text">文章总数</div>
-            <count-to class="card-panel-num" :startVal="0" :endVal="list.all" :duration="2600"></count-to>
-          </div>
-        </div>
-      </router-link>
-    </el-col>
   </el-row>
 </template>
 
