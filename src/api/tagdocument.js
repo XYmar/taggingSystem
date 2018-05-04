@@ -28,3 +28,33 @@ export function importDocu(data) {
     data
   })
 }
+export function documentDetail(id) {
+  return request({
+    url: '/documents/' + id,
+    params: {
+      userId: ''
+    },
+    method: 'get',
+    auth: {
+      username: 'admin',
+      password: 'admin'
+    }
+  })
+}
+
+export function markdocument(id, data) {
+  return request({
+    url: '/documents/' + id + '/mark',
+    params: {
+      documentId: id,
+      questions: data[0].question,
+      answers: data[0].answer
+    },
+    method: 'post',
+    auth: {
+      username: 'admin',
+      password: 'admin'
+    }
+  })
+}
+

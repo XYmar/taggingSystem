@@ -32,11 +32,30 @@
         <el-dropdown-item divided>
           <span style="display:block;">导出</span>
         </el-dropdown-item>
-
+       <!-- <el-dropdown-item divided>
+          <span @click="dialogFormVisible = true" style="display:block;">修改密码</span>
+        </el-dropdown-item>-->
         <el-dropdown-item divided>
           <span @click="logout" style="display:block;">退出登录</span>
         </el-dropdown-item>
       </el-dropdown-menu>
+      <!--<el-dialog title="修改密码" :visible.sync="dialogFormVisible">
+        <el-form :model="form" style="width: 400px; margin-left:50px;">
+          <el-form-item label="原密码" :label-width="formLabelWidth">
+            <el-input type="password" v-model="form.passwordOld" auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="新密码" :label-width="formLabelWidth">
+            <el-input type="password" v-model="form.passwordNew" auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="再次输入密码" :label-width="formLabelWidth">
+            <el-input type="password" v-model="form.passwordNew" auto-complete="off"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="handleUpdate">确 定</el-button>
+        </div>
+      </el-dialog>-->
     </el-dropdown>
   </el-menu>
 </template>
@@ -46,10 +65,27 @@ import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import { importDocu } from '@/api/tagdocument'
-import { Loading } from 'element-ui';
+import { Loading } from 'element-ui'
 
 /* eslint-disable */
 export default {
+  data() {
+    /* const validatePass = (rule, value, callback) => {
+      if (value.length < 5) {
+        callback(new Error('密码不能小于5位'))
+      } else {
+        callback()
+      }
+    }*/
+    return {
+      form: {
+        passwordOld: '',
+        passwordNew: ''
+      },
+      formLabelWidth: '100px',
+      dialogFormVisible: false
+    }
+  },
   components: {
     Breadcrumb,
     Hamburger
@@ -107,6 +143,9 @@ export default {
       this.$store.dispatch('FedLogOut').then(() => {
         this.$router.replace({ path: '/login' })
       })
+    },
+    handleUpdate() {
+      /* const passwordCookie = this.getCookie('password')*/
     }
   }
 }

@@ -91,7 +91,7 @@ export const constantRouterMap = [
     hidden: true,
     children: [
       {
-        path: 'index',
+        path: 'index/:id',
         name: 'Tag',
         component: () => import('@/views/tag/index'),
         meta: { title: '标注', icon: 'form' }
@@ -112,7 +112,7 @@ export const constantRouterMap = [
     ]
   },
 
-  {
+  /* {
     path: '/conflict',
     component: Layout,
     children: [
@@ -123,7 +123,7 @@ export const constantRouterMap = [
         meta: { title: '冲突', icon: 'bug' }
       }
     ]
-  },
+  },*/
 
   { path: '*', redirect: '/404', hidden: true }
 ]
@@ -133,4 +133,24 @@ export default new Router({
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
 })
+
+export const asyncRouterMap = [
+  {
+    path: '/conflict',
+    component: Layout,
+    meta: {
+      title: '冲突',
+      roles: ['admin']
+    },
+    children: [
+      {
+        path: 'index',
+        name: 'Conflict',
+        component: () => import('@/views/conflict/index'),
+        meta: { title: '冲突', icon: 'bug' }
+      }
+    ]
+  }
+]
+
 
