@@ -14,3 +14,18 @@ export function addUser(data) {
     data
   })
 }
+
+export function modifyUser(data) {
+  return request({
+    url: 'users',
+    method: 'post',
+    params: {
+      isAdmin: false
+    },
+    auth: {
+      username: 'admin',
+      password: 'admin'
+    },
+    data
+  })
+}

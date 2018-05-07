@@ -1,5 +1,8 @@
 import request from '@/utils/request'
+import { getCookies } from '../main'
 
+const loginName = getCookies('username')
+const loginPassword = getCookies('password')
 export function documentList() {
   return request({
     url: 'documents/mark',
@@ -8,8 +11,8 @@ export function documentList() {
     },
     method: 'get',
     auth: {
-      username: 'admin',
-      password: 'admin'
+      username: loginName,
+      password: loginPassword
     }
   })
 }
@@ -36,8 +39,8 @@ export function documentDetail(id) {
     },
     method: 'get',
     auth: {
-      username: 'admin',
-      password: 'admin'
+      username: loginName,
+      password: loginPassword
     }
   })
 }
@@ -52,8 +55,8 @@ export function markdocument(id, data) {
     },
     method: 'post',
     auth: {
-      username: 'admin',
-      password: 'admin'
+      username: loginName,
+      password: loginPassword
     }
   })
 }
@@ -67,8 +70,8 @@ export function updateMark(id, data) {
     },
     method: 'put',
     auth: {
-      username: 'admin',
-      password: 'admin'
+      username: loginName,
+      password: loginPassword
     }
   })
 }
@@ -81,8 +84,8 @@ export function deleteMark(documentId, markId) {
     },
     method: 'delete',
     auth: {
-      username: 'admin',
-      password: 'admin'
+      username: loginName,
+      password: loginPassword
     }
   })
 }
@@ -95,8 +98,8 @@ export function commitdocument(id) {
     },
     method: 'put',
     auth: {
-      username: 'admin',
-      password: 'admin'
+      username: loginName,
+      password: loginPassword
     }
   })
 }
@@ -106,8 +109,8 @@ export function docDistribution(data) {
     url: '/documents/distribution/mark/',
     method: 'post',
     auth: {
-      username: 'admin',
-      password: 'admin'
+      username: loginName,
+      password: loginPassword
     },
     data
   })

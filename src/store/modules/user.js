@@ -1,5 +1,6 @@
 import { login, logout, getInfo } from '@/api/login'
 import { getToken, setToken, removeToken, setRoles } from '@/utils/auth'
+import { getCookies } from '../../main'
 
 const user = {
   state: {
@@ -57,7 +58,10 @@ const user = {
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
         console.log('GetInfoSuccess')
-        getInfo(state.token).then(response => {
+        const userName = getCookies('username')
+        const passWord = getCookies('password')
+        getInfo(userName, passWord).then(response => {
+          console.log('getInfoSuccess')
           const data = response.data
           commit('SET_ROLES', data.username)
           commit('SET_NAME', data.username)
