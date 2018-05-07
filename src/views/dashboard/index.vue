@@ -24,9 +24,13 @@
     },
     created() {
       console.log(this.roles, 'roles')
-      if (!this.roles.includes('admin')) {
+      const loginName = this.getCookie('username')
+      if (loginName !== 'admin') {
         this.currentRole = 'editorDashboard'
       }
+      /*  if (!this.roles.includes('admin')) {
+        this.currentRole = 'editorDashboard'
+      }*/
     }
   }
 </script>

@@ -39,7 +39,6 @@
         </div>
       </router-link>
     </el-col>
-
   </el-row>
 </template>
 
@@ -81,9 +80,10 @@ export default {
   margin-top: 18px;
   .card-panel-col{
     margin-bottom: 32px;
+    width: 50%;
   }
   .card-panel {
-    height: 108px;
+    height: 200px;
     cursor: pointer;
     font-size: 12px;
     position: relative;
@@ -143,7 +143,7 @@ export default {
     }
     .card-panel-icon {
       float: left;
-      font-size: 48px;
+      font-size: 88px;
     }
     .card-panel-description {
       float: right;
@@ -151,9 +151,9 @@ export default {
       margin: 26px;
       margin-left: 0px;
       .card-panel-text {
-        line-height: 18px;
+        line-height: 60px;
         color: rgba(0, 0, 0, 0.45);
-        font-size: 16px;
+        font-size: 20px;
         margin-bottom: 12px;
       }
       .card-panel-num {
