@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard-editor-container">
+  <div class="dashboard-editor-container" id="dashboard-editor-container">
 
     <panel-group @handleSetLineChartData="handleSetLineChartData"></panel-group>
 
@@ -37,14 +37,23 @@
     },
     data() {
       return {
-        lineChartData: lineChartData.newVisitis
+        lineChartData: lineChartData.newVisitis,
+        windowHeight: null
       }
     },
+    created() {
+      this.windowHeight = window.innerHeight
+    },
+
     methods: {
       handleSetLineChartData(type) {
         this.lineChartData = lineChartData[type]
       }
+    },
+    mounted() {
+      document.getElementById('dashboard-editor-container').style.height = this.windowHeight - 50 + 'px'
     }
+
   }
 </script>
 

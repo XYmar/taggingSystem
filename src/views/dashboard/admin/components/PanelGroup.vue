@@ -39,6 +39,7 @@
         </div>
       </router-link>
     </el-col>
+
   </el-row>
 </template>
 
@@ -79,7 +80,7 @@ export default {
 .panel-group {
   margin-top: 18px;
   .card-panel-col{
-    margin-bottom: 70px;
+    margin-bottom: 32px;
     width: 50%;
   }
   .card-panel {
