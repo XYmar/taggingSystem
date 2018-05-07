@@ -79,7 +79,7 @@ export default {
 .panel-group {
   margin-top: 18px;
   .card-panel-col{
-    margin-bottom: 32px;
+    margin-bottom: 70px;
     width: 50%;
   }
   .card-panel {
