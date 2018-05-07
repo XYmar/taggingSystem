@@ -91,10 +91,10 @@
       }
     },
     created() {
-      // this.getList()
+      this.getList()
     },
     methods: {
-      /*getList() {
+      getList() {
         this.listLoading = true
         documentList(this.listQuery).then(response => {
           this.list = response.data.data
@@ -103,7 +103,7 @@
           this.oldList = this.list.map(v => v.id);
           this.newList = this.oldList.slice()
         })
-      },*/
+      },
       handleSizeChange(val) {
         this.listQuery.limit = val
         // this.getList()

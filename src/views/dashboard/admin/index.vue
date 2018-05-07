@@ -1,10 +1,10 @@
 <template>
-  <div class="dashboard-editor-container">
+  <div class="dashboard-editor-container" id="dashboard-editor-container">
     <panel-group @handleSetLineChartData="handleSetLineChartData"></panel-group>
 
-    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+   <!-- <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
       <TimeLine></TimeLine>
-    </el-row>
+    </el-row>-->
 
   </div>
 </template>
@@ -46,8 +46,17 @@ export default {
   },
   data() {
     return {
-      lineChartData: lineChartData.newVisitis
+      lineChartData: lineChartData.newVisitis,
+      windowHeight: null
     }
+  },
+  created () {
+    this.windowHeight = window.innerHeight
+    /*this.windowHeight = document.body.clientHeight || document.documentElement.clientHeight*/
+  },
+  mounted () {
+    document.getElementById('dashboard-editor-container').style.height = this.windowHeight - 50 + 'px'
+    console.log(this.windowHeight,222)
   },
   methods: {
     handleSetLineChartData(type) {
