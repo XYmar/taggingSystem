@@ -8,7 +8,6 @@
   import { mapGetters } from 'vuex'
   import adminDashboard from './admin'
   import editorDashboard from './editor'
-  import { getCookies } from '../../main'
 
   export default {
     name: 'dashboard',
@@ -24,14 +23,14 @@
       ])
     },
     created() {
-      let loginName = getCookies('username')
       console.log(this.roles, 'roles')
-      /*if (!this.roles.includes('admin')) {
-        this.currentRole = 'editorDashboard'
-      }*/
-      if (loginName != 'admin' ) {
+      const loginName = this.getCookie('username')
+      if (loginName !== 'admin') {
         this.currentRole = 'editorDashboard'
       }
+      /*  if (!this.roles.includes('admin')) {
+        this.currentRole = 'editorDashboard'
+      }*/
     }
   }
 </script>

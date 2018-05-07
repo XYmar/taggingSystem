@@ -25,9 +25,11 @@
           <span>{{scope.row.type}}</span>
         </template>
       </el-table-column>
-      <el-table-column width="150px" label="标注">
+      <el-table-column width="150px" label="标注" prop="marked"
+                       :filters="[{ text: '已标注', value: true }, { text: '未标注', value: false }]"
+                       :filter-method="filterTag">
         <template slot-scope="scope">
-          <span class="el-tag el-tag--success"  v-if="scope.row.marked">已标注</span>
+          <span class="el-tag el-tag--success" v-if="scope.row.marked">已标注</span>
           <span class="el-tag el-tag--danger" v-else>未标注</span>
         </template>
       </el-table-column>
@@ -39,7 +41,7 @@
       </el-pagination>
     </div>-->
 
-    <el-dialog title="申请标注" :visible.sync="dialogFormVisible">
+    <el-dialog title="申请标注" :visible.sync="dialogFormVisible" width="40%">
       <el-form ref="dataForm" :model="temp" label-position="left" label-width="100px">
         <el-form-item label="申请数量: " prop="num">
           <el-input v-model="temp.num" style="width: 200px"></el-input>
@@ -104,6 +106,11 @@
           this.newList = this.oldList.slice()
         })
       },
+      filterTag(value, row) {
+        console.log(row.marked);
+        console.log(value);
+        return row.marked === value;
+      },
       handleSizeChange(val) {
         this.listQuery.limit = val
         // this.getList()
@@ -150,6 +157,8 @@
                 type: 'success',
                 duration: 2000
               })
+
+              this.getList()
 
 
             })
