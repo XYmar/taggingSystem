@@ -90,15 +90,21 @@
           id: '',
           num: ''
         },
+        loginInfo: {
+          username: '',
+          password: ''
+        }
       }
     },
     created() {
+      this.loginInfo.username = this.getCookie('username')
+      this.loginInfo.password = this.getCookie('password')
       this.getList()
     },
     methods: {
       getList() {
         this.listLoading = true
-        documentList(this.listQuery).then(response => {
+        documentList(this.listQuery,this.loginInfo).then(response => {
           this.list = response.data.data
           this.total = response.data.total
           this.listLoading = false
@@ -143,7 +149,7 @@
 
             //console.log(formData);
 
-            docDistribution(formData).then(response => {
+            docDistribution(formData, this.loginInfo).then(response => {
 
               this.list = response.data.data;
               //console.log(response.data)
