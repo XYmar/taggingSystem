@@ -39,7 +39,7 @@
       </el-pagination>
     </div>-->
 
-    <el-dialog title="申请标注" :visible.sync="dialogFormVisible">
+    <el-dialog title="申请标注" :visible.sync="dialogFormVisible" width="40%">
       <el-form ref="dataForm" :model="temp" label-position="left" label-width="100px">
         <el-form-item label="申请数量: " prop="num">
           <el-input v-model="temp.num" style="width: 200px"></el-input>
@@ -91,10 +91,10 @@
       }
     },
     created() {
-      // this.getList()
+      this.getList()
     },
     methods: {
-      /*getList() {
+      getList() {
         this.listLoading = true
         documentList(this.listQuery).then(response => {
           this.list = response.data.data
@@ -103,7 +103,7 @@
           this.oldList = this.list.map(v => v.id);
           this.newList = this.oldList.slice()
         })
-      },*/
+      },
       handleSizeChange(val) {
         this.listQuery.limit = val
         // this.getList()
@@ -150,6 +150,8 @@
                 type: 'success',
                 duration: 2000
               })
+
+              this.getList()
 
 
             })
