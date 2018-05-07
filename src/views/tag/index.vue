@@ -205,7 +205,7 @@
               message: '提交成功',
               type: 'success'
             });
-            this.getdocument()
+            this.$router.replace('/document/index')
           })
         }else{
           this.$message({
