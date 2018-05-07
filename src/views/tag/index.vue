@@ -121,11 +121,17 @@
         pFontSize: null,
         tagContainer: null,
         pContainer: null,
-        setWidth: null
+        setWidth: null,
+        loginInfo: {
+          username: '',
+          password: ''
+        }
       }
     },
     created() {
-      this.getList()
+      /*this.getList()*/
+      this.loginInfo.username = this.getCookie('username')
+      this.loginInfo.password = this.getCookie('password')
       this.id = this.$route.params.id
       this.getdocument()
       if (this.getCookie('pfontSize')) {
@@ -157,7 +163,7 @@
           this.tagContainer.style.position = 'static'
         }
       },
-      getList() {
+      /* getList() {
         this.listLoading = true
         documentList(this.listQuery).then(response => {
           this.list = response.data.data
@@ -166,10 +172,10 @@
           this.oldList = this.list.map(v => v.id);
           this.newList = this.oldList.slice()
         })
-      },
+      },*/
       getdocument () {
         this.listLoading = true
-        documentDetail(this.id).then(response => {
+        documentDetail(this.id,this.loginInfo).then(response => {
           this.document = response.data.data
           this.marked= this.document.marked
           this.markList = response.data.data.markEntityList
@@ -197,7 +203,7 @@
             question: this.input1.question,
             answer: this.input1.answer
           }
-        markdocument(this.id, this.markdata).then(response => {
+        markdocument(this.id, this.markdata, this.loginInfo).then(response => {
           console.log(response.data)
           this.input1.question = ''
           this.input1.answer = ''
@@ -211,7 +217,7 @@
       },
       updateTag(id, item) {
         console.log(item.question)
-        updateMark(id, item).then(response => {
+        updateMark(id, item, this.loginInfo).then(response => {
           this.$notify({
             title: '成功',
             message: '修改成功',
@@ -223,7 +229,7 @@
       },
       deleteTag (markId) {
         let documentId = this.id
-        deleteMark(documentId, markId).then(response => {
+        deleteMark(documentId, markId, this.loginInfo).then(response => {
           this.getdocument()
           console.log('deleteSuccess')
         })
@@ -238,7 +244,7 @@
 
         console.log(this.markList.length)
         if(this.markList.length >= 5){
-          commitdocument(this.id).then(response => {
+          commitdocument(this.id, this.loginInfo).then(response => {
             this.$message({
               message: '提交成功',
               type: 'success'

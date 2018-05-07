@@ -1,9 +1,6 @@
 import request from '@/utils/request'
-import { getCookies } from '../main'
 
-const loginName = getCookies('username')
-const loginPassword = getCookies('password')
-export function documentList() {
+export function documentList(listQuery, loginInfo) {
   return request({
     url: 'documents/mark',
     params: {
@@ -11,8 +8,8 @@ export function documentList() {
     },
     method: 'get',
     auth: {
-      username: loginName,
-      password: loginPassword
+      username: loginInfo.username,
+      password: loginInfo.password
     }
   })
 }
@@ -31,7 +28,7 @@ export function importDocu(data) {
     data
   })
 }
-export function documentDetail(id) {
+export function documentDetail(id, loginInfo) {
   return request({
     url: '/documents/' + id,
     params: {
@@ -39,13 +36,13 @@ export function documentDetail(id) {
     },
     method: 'get',
     auth: {
-      username: loginName,
-      password: loginPassword
+      username: loginInfo.username,
+      password: loginInfo.password
     }
   })
 }
 
-export function markdocument(id, data) {
+export function markdocument(id, data, loginInfo) {
   return request({
     url: '/documents/' + id + '/mark',
     params: {
@@ -55,12 +52,12 @@ export function markdocument(id, data) {
     },
     method: 'post',
     auth: {
-      username: loginName,
-      password: loginPassword
+      username: loginInfo.username,
+      password: loginInfo.password
     }
   })
 }
-export function updateMark(id, data) {
+export function updateMark(id, data, loginInfo) {
   return request({
     url: '/marks/' + id,
     params: {
@@ -70,12 +67,12 @@ export function updateMark(id, data) {
     },
     method: 'put',
     auth: {
-      username: loginName,
-      password: loginPassword
+      username: loginInfo.username,
+      password: loginInfo.password
     }
   })
 }
-export function deleteMark(documentId, markId) {
+export function deleteMark(documentId, markId, loginInfo) {
   return request({
     url: '/documents/' + documentId + '/mark/' + markId,
     params: {
@@ -84,13 +81,13 @@ export function deleteMark(documentId, markId) {
     },
     method: 'delete',
     auth: {
-      username: loginName,
-      password: loginPassword
+      username: loginInfo.username,
+      password: loginInfo.password
     }
   })
 }
 
-export function commitdocument(id) {
+export function commitdocument(id, loginInfo) {
   return request({
     url: '/documents/' + id + '/mark/release',
     params: {
@@ -98,19 +95,19 @@ export function commitdocument(id) {
     },
     method: 'put',
     auth: {
-      username: loginName,
-      password: loginPassword
+      username: loginInfo.username,
+      password: loginInfo.password
     }
   })
 }
 
-export function docDistribution(data) {
+export function docDistribution(data, loginInfo) {
   return request({
     url: '/documents/distribution/mark/',
     method: 'post',
     auth: {
-      username: loginName,
-      password: loginPassword
+      username: loginInfo.username,
+      password: loginInfo.password
     },
     data
   })
