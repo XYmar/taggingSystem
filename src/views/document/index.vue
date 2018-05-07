@@ -25,9 +25,11 @@
           <span>{{scope.row.type}}</span>
         </template>
       </el-table-column>
-      <el-table-column width="150px" label="标注">
+      <el-table-column width="150px" label="标注" prop="marked"
+                       :filters="[{ text: '已标注', value: true }, { text: '未标注', value: false }]"
+                       :filter-method="filterTag">
         <template slot-scope="scope">
-          <span class="el-tag el-tag--success"  v-if="scope.row.marked">已标注</span>
+          <span class="el-tag el-tag--success" v-if="scope.row.marked">已标注</span>
           <span class="el-tag el-tag--danger" v-else>未标注</span>
         </template>
       </el-table-column>
@@ -103,6 +105,11 @@
           this.oldList = this.list.map(v => v.id);
           this.newList = this.oldList.slice()
         })
+      },
+      filterTag(value, row) {
+        console.log(row.marked);
+        console.log(value);
+        return row.marked === value;
       },
       handleSizeChange(val) {
         this.listQuery.limit = val
