@@ -24,7 +24,7 @@
                      :show-file-list="false"
                      multiple>
 
-            <span style="display:block;">导入</span>
+            <span style="display:block;width: 56px;text-align: left;">导入</span>
 
           </el-upload>
 
