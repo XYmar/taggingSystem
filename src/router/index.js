@@ -111,6 +111,19 @@ export const constantRouterMap = [
       }
     ]
   },
+  {
+    path: '/review',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: 'index/:id',
+        name: 'Review',
+        component: () => import('@/views/review/index'),
+        meta: { title: '审阅', icon: 'example' }
+      }
+    ]
+  },
 
   /* {
     path: '/conflict',
@@ -152,5 +165,3 @@ export const asyncRouterMap = [
     ]
   }
 ]
-
-

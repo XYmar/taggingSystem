@@ -12,11 +12,11 @@
       </div>
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
         <router-link class="inlineBlock" to="/">
-          <el-dropdown-item>
+          <el-dropdown-item style="padding:0 15px">
             主页
           </el-dropdown-item>
         </router-link>
-        <el-dropdown-item divided>
+        <el-dropdown-item style="padding:0">
           <el-upload class="upload-demo"
                      action=""
                      :file-list="fileList"
@@ -24,19 +24,19 @@
                      :show-file-list="false"
                      multiple>
 
-            <span style="display:block;width: 56px;text-align: left;">导入</span>
+            <span style="display:block;padding: 0 15px;width:86px;text-align:left">导入</span>
 
           </el-upload>
 
         </el-dropdown-item>
-        <el-dropdown-item divided>
-          <span style="display:block;">导出</span>
+        <el-dropdown-item style="padding:0">
+          <span style="display:block;padding: 0 15px;">导出</span>
         </el-dropdown-item>
        <!-- <el-dropdown-item divided>
           <span @click="dialogFormVisible = true" style="display:block;">修改密码</span>
         </el-dropdown-item>-->
-        <el-dropdown-item divided>
-          <span @click="logout" style="display:block;">退出登录</span>
+        <el-dropdown-item style="padding:0">
+          <span @click="logout" style="display:block;padding: 0 15px;">退出登录</span>
         </el-dropdown-item>
       </el-dropdown-menu>
       <!--<el-dialog title="修改密码" :visible.sync="dialogFormVisible">
@@ -150,6 +150,7 @@ export default {
   }
 }
 </script>
+
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .navbar {

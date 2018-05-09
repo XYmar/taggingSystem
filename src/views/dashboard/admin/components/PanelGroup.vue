@@ -39,6 +39,19 @@
         </div>
       </router-link>
     </el-col>
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <router-link to="/device/device">
+        <div class='card-panel' @click="handleSetLineChartData('newVisitis')">
+          <div class="card-panel-icon-wrapper icon-computer">
+            <svg-icon icon-class="conflict1" class-name="card-panel-icon" />
+          </div>
+          <div class="card-panel-description">
+            <div class="card-panel-text">冲突</div>
+            <count-to class="card-panel-num" :startVal="0" :endVal="list.reviewed" :duration="2600"></count-to>
+          </div>
+        </div>
+      </router-link>
+    </el-col>
 
   </el-row>
 </template>

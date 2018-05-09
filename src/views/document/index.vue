@@ -11,7 +11,7 @@
       </el-button>
     </div>
 
-    <el-table :key='tableKey' :data="listA" v-loading="listLoading" element-loading-text="请先申请标注" border fit highlight-current-row
+    <el-table :key='tableKey' :data="listA.slice((currentPage-1)*pagesize,currentPage*pagesize)" v-loading="listLoading" element-loading-text="请先申请标注" border fit highlight-current-row
               style="width: 100%">
 
       <el-table-column label="标题" min-width="100">
@@ -53,7 +53,17 @@
         <el-button type="primary" @click="ApplyDoc">确认</el-button>
       </div>
     </el-dialog>
-
+    <div class="paginationContainer">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[10, 20, 50, 100]"
+        :page-size="10"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="listA.length">
+      </el-pagination>
+    </div>
   </div>
 </template>
 
@@ -93,7 +103,10 @@
         loginInfo: {
           username: '',
           password: ''
-        }
+        },
+        total:0,//默认数据总数
+        pagesize:10,//每页的数据条数
+        currentPage:1,//默认开始页面
       }
     },
     created() {
@@ -119,10 +132,12 @@
       },
       handleSizeChange(val) {
         this.listQuery.limit = val
+        this.pagesize = val
         // this.getList()
       },
       handleCurrentChange(val) {
         this.listQuery.page = val
+        this.currentPage = val
         // this.getList()
       },
       resetTemp() {
@@ -180,7 +195,7 @@
       listA: function () {
         let self = this;
         return self.list.filter(function (item) {
-          console.log(item)
+          /* console.log(item) */
           return item.title.toLowerCase().indexOf(self.searchQuery.toLowerCase()) !== -1;
         })
 
@@ -192,5 +207,9 @@
 <style scoped>
   .titleHover:hover {
     background: rgba(31, 26, 233, 0.34);
+  }
+  .paginationContainer {
+    text-align: center;
+    padding: 20px 10px;
   }
 </style>
