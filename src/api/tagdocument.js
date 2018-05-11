@@ -28,6 +28,22 @@ export function importDocu(data) {
     data
   })
 }
+
+export function outPutDocu(data) {
+  return request({
+    url: '/documents/import',
+    method: 'post',
+    auth: {
+      username: 'admin',
+      password: 'admin'
+    },
+    headers: {
+      'content-type': 'application/x-www-form-urlencoded'
+    },
+    data
+  })
+}
+
 export function documentDetail(id, loginInfo) {
   return request({
     url: '/documents/' + id,

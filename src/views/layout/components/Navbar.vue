@@ -61,7 +61,7 @@
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click="outputVisible = false">取 消</el-button>
-            <el-button type="primary" @click="handleUpdate">确 定</el-button>
+            <el-button type="primary" @click="handleOutput">确 定</el-button>
           </div>
         </el-dialog>
         <!--<el-dialog title="修改密码" :visible.sync="dialogFormVisible">
