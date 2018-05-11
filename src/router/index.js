@@ -111,8 +111,20 @@ export const constantRouterMap = [
       }
     ]
   },
-
-  /* {
+  {
+    path: '/review',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: 'index/:id',
+        name: 'Review',
+        component: () => import('@/views/review/index'),
+        meta: { title: '审阅', icon: 'example' }
+      }
+    ]
+  },
+  {
     path: '/conflict',
     component: Layout,
     children: [
@@ -123,7 +135,20 @@ export const constantRouterMap = [
         meta: { title: '冲突', icon: 'bug' }
       }
     ]
-  },*/
+  },
+  {
+    path: '/conflictDetails',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: 'index/:id/:cId',
+        name: 'ConflictDetails',
+        component: () => import('@/views/conflictDetails/index'),
+        meta: { title: '冲突', icon: 'bug' }
+      }
+    ]
+  },
 
   { path: '*', redirect: '/404', hidden: true }
 ]
@@ -135,7 +160,7 @@ export default new Router({
 })
 
 export const asyncRouterMap = [
-  {
+/*  {
     path: '/conflict',
     component: Layout,
     meta: {
@@ -150,7 +175,5 @@ export const asyncRouterMap = [
         meta: { title: '冲突', icon: 'bug' }
       }
     ]
-  }
+  }*/
 ]
-
-

@@ -12,19 +12,19 @@
       <h3 style="position:relative;margin:0;padding-right:60px;">
         {{this.document.title}}
         <div class="fontSizeContainer">
-          <el-button type="text" style="font-size: 12px" @click="setFontSize(14)">T</el-button>
-          <el-button type="text" style="font-size: 14px" @click="setFontSize(16)">T</el-button>
-          <el-button type="text" style="font-size: 17px" @click="setFontSize(18)">T</el-button>
+          <span :class="{'selectedFontSize': pFontSize == 14}" type="text" style="font-size: 12px" @click="setFontSize(14)">T</span>
+          <span :class="{'selectedFontSize': pFontSize == 16}" type="text" style="font-size: 14px" @click="setFontSize(16)">T</span>
+          <span :class="{'selectedFontSize': pFontSize == 18}" type="text" style="font-size: 17px" @click="setFontSize(18)">T</span>
         </div>
       </h3>
 
-      <p id="articleT" style="text-indent: 2em;line-height: 24px;">{{this.document.content}}</p>
+      <p id="articleT" style="text-indent: 2em;line-height: 24px;font-size: 16px">{{this.document.content}}</p>
     </div>
     <div id="tagContainer" class="tagsConatiner" style="min-width:350px;height:600px;overflow-y:scroll;float:right; border:1px solid #ccc; margin-top:8px;padding-right:10px;padding-top:10px;padding-left:4px;">
       <div v-if="this.markList && this.markList.length > 0">
-          <div v-for="item in markList" style="margin-bottom: 10px">
+          <div v-for="(item, index) in markList" style="margin-bottom: 10px">
             <div class="questionContainer">
-              <span style="width:6%;float:left;padding:4px 4px">Q:</span>
+              <span style="width:6%;float:left;padding:4px 4px">Q<span style="font-size:12px;">{{index + 1}}</span></span>
               <el-input style="width: 94%;padding-left:10px;margin-bottom: 10px;" type="textarea"
                         :autosize="{ minRows: 1}" placeholder="添加标记"
                         v-model="item.question"
@@ -32,7 +32,7 @@
               </el-input>
             </div>
             <div class="answerContainer">
-              <span style="width:6%;float:left;padding:4px 4px">A:</span>
+              <span style="width:6%;float:left;padding:4px 4px">A<span style="font-size:12px;">{{index + 1}}</span></span>
               <el-input style="width: 94%;padding-left:10px;" type="textarea"
                         :autosize="{ minRows: 2}" placeholder="添加答案"
                         v-model="item.answer"
@@ -40,6 +40,7 @@
               </el-input>
             </div>
             <div class="btnContainer" style="margin:10px 0;height:40px" v-if="!marked">
+              <span style="font-size:14px;float:left;margin-left:28px;padding-top: 10px">类型：{{item.markTypeEntity.name}}</span>
               <el-button type="danger" style="float:right;" @click="deleteTag(item.id)">删除</el-button>
               <el-button type="primary" style="float: right;margin-right: 10px;" @click="updateTag(item.id, item)">修改</el-button>
             </div>
@@ -65,6 +66,16 @@
         </div>
         <div class="btnContainer" style="margin:10px 0;height:40px">
           <el-button type="success" @click="saveTags" style="float:right;">保存</el-button>
+          <el-select v-model="value"
+                     @change="selectedMarkType()"
+                     style="float:right;margin-right:10px;width:208px">
+            <el-option
+              v-for="item in markTypeData"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
+            </el-option>
+          </el-select>
         </div>
       </div>
      <!-- <div class="inputContainer" style="margin-bottom: 10px">
@@ -100,8 +111,8 @@
 </template>
 
 <script>
-  import { documentDetail, documentList, markdocument, updateMark, deleteMark, commitdocument } from '@/api/tagdocument'
-
+  import { documentDetail, markdocument, updateMark, deleteMark, commitdocument } from '@/api/tagdocument'
+  import { markType } from '../../api/markType'
   /* eslint-disable */
   export default {
     name: 'tag',
@@ -125,7 +136,10 @@
         loginInfo: {
           username: '',
           password: ''
-        }
+        },
+        markTypeData: null,
+        value: '',
+        markTypeId: ''
       }
     },
     created() {
@@ -134,6 +148,7 @@
       this.loginInfo.password = this.getCookie('password')
       this.id = this.$route.params.id
       this.getdocument()
+      this.getMarkType()
       if (this.getCookie('pfontSize')) {
         this.pFontSize = this.getCookie('pfontSize')
         console.log(this.pFontSize)
@@ -153,14 +168,16 @@
     methods: {
       setScroll() {
         let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-        if (scrollTop > 120) {
-          /* let setWidth = this.btnContainer.offsetWidth*/
-          this.tagContainer.style.position = 'fixed'
-          this.tagContainer.style.top = '0'
-          this.tagContainer.style.right = '20px'
-          /*this.tagContainer.style.width = this.setWidth * 0.46 + 'px'*/
-        } else {
-          this.tagContainer.style.position = 'static'
+        if (this.tagContainer != null) {
+          if (scrollTop > 120) {
+            /* let setWidth = this.btnContainer.offsetWidth*/
+            this.tagContainer.style.position = 'fixed'
+            this.tagContainer.style.top = '0'
+            this.tagContainer.style.right = '20px'
+            /*this.tagContainer.style.width = this.setWidth * 0.46 + 'px'*/
+          } else {
+            this.tagContainer.style.position = 'static'
+          }
         }
       },
       /* getList() {
@@ -173,6 +190,16 @@
           this.newList = this.oldList.slice()
         })
       },*/
+      getMarkType() {
+        markType(this.loginInfo).then((res) => {
+          this.markTypeData = res.data.data
+          console.log(res.data)
+        })
+      },
+      selectedMarkType() {
+        this.markTypeId = this.value
+        console.log(this.markTypeId)
+      },
       getdocument () {
         this.listLoading = true
         documentDetail(this.id,this.loginInfo).then(response => {
@@ -191,7 +218,6 @@
         } else if ((document.body) && (document.body.clientHeight)) {
           tagCHeight = document.body.clientHeight;
         }
-        console.log(tagCHeight)
         var tagContainer = document.getElementById('tagContainer')
         tagContainer.style.height = tagCHeight
       },
@@ -201,12 +227,15 @@
         this.markdata =
           {
             question: this.input1.question,
-            answer: this.input1.answer
+            answer: this.input1.answer,
+            markType: this.markTypeId
           }
         markdocument(this.id, this.markdata, this.loginInfo).then(response => {
           console.log(response.data)
           this.input1.question = ''
           this.input1.answer = ''
+          this.markTypeId = ''
+          this.value = ''
           this.markdata = {}
           this.getdocument()
         })
@@ -244,12 +273,18 @@
 
         console.log(this.markList.length)
         if(this.markList.length >= 5){
-          commitdocument(this.id, this.loginInfo).then(response => {
-            this.$message({
-              message: '提交成功',
-              type: 'success'
-            });
-            this.$router.replace('/document/index')
+          this.$confirm('确认提交标注结果吗?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            commitdocument(this.id, this.loginInfo).then(response => {
+              this.$message({
+                message: '提交成功',
+                type: 'success'
+              });
+              this.$router.replace('/document/index')
+            })
           })
         }else{
           this.$message({
@@ -260,6 +295,7 @@
 
       },
       setFontSize (x) {
+        this.pFontSize = x
         this.setCookie('pfontSize', x, 30)
         let pWords = document.getElementById('articleT')
         pWords.style.fontSize = x + 'px'
@@ -279,7 +315,17 @@
   }
   .fontSizeContainer {
     position: absolute;
-    top: -8px;
+    top: 0;
     right:0;
+  }
+  .fontSizeContainer span {
+    color:#36a3f7;
+    padding: 4px;
+    cursor: pointer;
+    width: 10px;
+  }
+  .fontSizeContainer .selectedFontSize {
+    color: #cccccc;
+    background: #eee;
   }
 </style>

@@ -10,3 +10,19 @@ export function countList() {
     }
   })
 }
+export function conflictList() {
+  return request({
+    url: '/conflicts',
+    params: {
+      userId: ''
+    },
+    method: 'get',
+    auth: {
+      /* username: loginInfo.username,
+      password: loginInfo.password*/
+      username: 'admin',
+      password: 'admin'
+    }
+  })
+}
+

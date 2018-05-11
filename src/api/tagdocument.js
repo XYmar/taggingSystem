@@ -48,7 +48,8 @@ export function markdocument(id, data, loginInfo) {
     params: {
       documentId: id,
       questions: data.question,
-      answers: data.answer
+      answers: data.answer,
+      markTypeId: data.markType
     },
     method: 'post',
     auth: {
