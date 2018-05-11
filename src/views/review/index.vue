@@ -39,6 +39,9 @@
             <el-button type="warning" v-if="!item.conflict" style="float:right;" @click="setConflict(item.id)">冲突</el-button>
             <el-button type="warning" v-else disabled="disabled" style="float:right;" @click="setConflict(item.id)">已提交</el-button>
           </div>
+          <div>
+            <br/>
+          </div>
         </div>
 
       </div>
@@ -150,14 +153,16 @@
     methods: {
       setScroll() {
         let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-        if (scrollTop > 120) {
-          /* let setWidth = this.btnContainer.offsetWidth*/
-          this.tagContainer.style.position = 'fixed'
-          this.tagContainer.style.top = '0'
-          this.tagContainer.style.right = '20px'
-          /*this.tagContainer.style.width = this.setWidth * 0.46 + 'px'*/
-        } else {
-          this.tagContainer.style.position = 'static'
+        if(this.tagContainer != null) {
+          if (scrollTop > 120) {
+            /* let setWidth = this.btnContainer.offsetWidth*/
+            this.tagContainer.style.position = 'fixed'
+            this.tagContainer.style.top = '0'
+            this.tagContainer.style.right = '20px'
+            /*this.tagContainer.style.width = this.setWidth * 0.46 + 'px'*/
+          } else {
+            this.tagContainer.style.position = 'static'
+          }
         }
       },
       /* getList() {

@@ -40,6 +40,7 @@
               </el-input>
             </div>
             <div class="btnContainer" style="margin:10px 0;height:40px" v-if="!marked">
+              <span style="font-size:14px;float:left;margin-left:28px;padding-top: 10px">类型：{{item.markTypeEntity.name}}</span>
               <el-button type="danger" style="float:right;" @click="deleteTag(item.id)">删除</el-button>
               <el-button type="primary" style="float: right;margin-right: 10px;" @click="updateTag(item.id, item)">修改</el-button>
             </div>
@@ -65,6 +66,16 @@
         </div>
         <div class="btnContainer" style="margin:10px 0;height:40px">
           <el-button type="success" @click="saveTags" style="float:right;">保存</el-button>
+          <el-select v-model="value"
+                     @change="selectedMarkType()"
+                     style="float:right;margin-right:10px;width:208px">
+            <el-option
+              v-for="item in markTypeData"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
+            </el-option>
+          </el-select>
         </div>
       </div>
      <!-- <div class="inputContainer" style="margin-bottom: 10px">
@@ -101,7 +112,7 @@
 
 <script>
   import { documentDetail, markdocument, updateMark, deleteMark, commitdocument } from '@/api/tagdocument'
-
+  import { markType } from '../../api/markType'
   /* eslint-disable */
   export default {
     name: 'tag',
@@ -125,7 +136,10 @@
         loginInfo: {
           username: '',
           password: ''
-        }
+        },
+        markTypeData: null,
+        value: '',
+        markTypeId: ''
       }
     },
     created() {
@@ -134,6 +148,7 @@
       this.loginInfo.password = this.getCookie('password')
       this.id = this.$route.params.id
       this.getdocument()
+      this.getMarkType()
       if (this.getCookie('pfontSize')) {
         this.pFontSize = this.getCookie('pfontSize')
         console.log(this.pFontSize)
@@ -153,14 +168,16 @@
     methods: {
       setScroll() {
         let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-        if (scrollTop > 120) {
-          /* let setWidth = this.btnContainer.offsetWidth*/
-          this.tagContainer.style.position = 'fixed'
-          this.tagContainer.style.top = '0'
-          this.tagContainer.style.right = '20px'
-          /*this.tagContainer.style.width = this.setWidth * 0.46 + 'px'*/
-        } else {
-          this.tagContainer.style.position = 'static'
+        if (this.tagContainer != null) {
+          if (scrollTop > 120) {
+            /* let setWidth = this.btnContainer.offsetWidth*/
+            this.tagContainer.style.position = 'fixed'
+            this.tagContainer.style.top = '0'
+            this.tagContainer.style.right = '20px'
+            /*this.tagContainer.style.width = this.setWidth * 0.46 + 'px'*/
+          } else {
+            this.tagContainer.style.position = 'static'
+          }
         }
       },
       /* getList() {
@@ -173,6 +190,16 @@
           this.newList = this.oldList.slice()
         })
       },*/
+      getMarkType() {
+        markType(this.loginInfo).then((res) => {
+          this.markTypeData = res.data.data
+          console.log(res.data)
+        })
+      },
+      selectedMarkType() {
+        this.markTypeId = this.value
+        console.log(this.markTypeId)
+      },
       getdocument () {
         this.listLoading = true
         documentDetail(this.id,this.loginInfo).then(response => {
@@ -200,12 +227,15 @@
         this.markdata =
           {
             question: this.input1.question,
-            answer: this.input1.answer
+            answer: this.input1.answer,
+            markType: this.markTypeId
           }
         markdocument(this.id, this.markdata, this.loginInfo).then(response => {
           console.log(response.data)
           this.input1.question = ''
           this.input1.answer = ''
+          this.markTypeId = ''
+          this.value = ''
           this.markdata = {}
           this.getdocument()
         })
