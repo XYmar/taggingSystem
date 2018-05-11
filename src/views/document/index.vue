@@ -9,10 +9,29 @@
       <el-button class="filter-item pull-right" style="float: right;margin-left: 10px;" @click="handleApply" type="primary"
                  icon="el-icon-plus">申请标注
       </el-button>
+      <div v-if="loginInfo.username == 'admin'" class="markTypeContainer" style="float:right;margin-right:20px;">
+        <el-select
+          v-model="value"
+          filterable
+          allow-create
+          placeholder="新建或删除一个分类"
+          @change="selectedMarkType()"
+        >
+          <el-option
+            v-if="item.name != '默认'"
+            v-for="item in markTypeData"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id">
+          </el-option>
+        </el-select>
+        <span @click="deleteTypes"><el-button type="danger" icon="el-icon-delete" circle></el-button></span>
+      </div>
     </div>
-
-    <el-table :key='tableKey' :data="listA.slice((currentPage-1)*pagesize,currentPage*pagesize)" v-loading="listLoading" element-loading-text="请先申请标注" border fit highlight-current-row
-              style="width: 100%">
+    <!--listA.slice((currentPage-1)*pagesize,currentPage*pagesize)-->
+    <el-table :key='tableKey' :data="listA" v-loading="listLoading" element-loading-text="请先申请标注" border fit highlight-current-row
+              style="width: 100%"
+    >
 
       <el-table-column label="标题" min-width="100">
         <template slot-scope="scope">
@@ -33,14 +52,7 @@
           <span class="el-tag el-tag--danger" v-else>未标注</span>
         </template>
       </el-table-column>
-
     </el-table>
-
-    <!--<div class="pagination-container">
-      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
-      </el-pagination>
-    </div>-->
-
     <el-dialog title="申请标注" :visible.sync="dialogFormVisible" width="40%">
       <el-form ref="dataForm" :model="temp" label-position="left" label-width="100px">
         <el-form-item label="申请数量: " prop="num">
@@ -69,6 +81,7 @@
 
 <script>
   import { documentList, docDistribution } from '@/api/tagdocument'
+  import { markType, addMarkType, delMarkType } from '../../api/markType'
   import waves from '@/directive/waves' // 水波纹指令
   /* eslint-disable */
   export default {
@@ -107,14 +120,67 @@
         total:0,//默认数据总数
         pagesize:10,//每页的数据条数
         currentPage:1,//默认开始页面
+        value: null,
+        markTypeData: null,
+        markTypeId: '',
+        markTypeName: '',
+        selectId: false
       }
     },
     created() {
       this.loginInfo.username = this.getCookie('username')
       this.loginInfo.password = this.getCookie('password')
       this.getList()
+      this.getMarkType()
     },
     methods: {
+      getMarkType() {
+        markType(this.loginInfo).then((res) => {
+          this.markTypeData = res.data.data
+          console.log(res.data,1111)
+        })
+      },
+      selectedMarkType () {
+        console.log('valuechange')
+        this.markTypeName = this.value
+        console.log(this.markTypeId)
+        let isExisted = false
+        this.selectId = false
+        for(let i=0;i<this.markTypeData.length;i++){
+          if(this.markTypeName == this.markTypeData[i].name || this.markTypeName == this.markTypeData[i].id){
+            isExisted = true
+            this.selectId = true
+            break
+          }
+        }
+        if(!isExisted) {
+          addMarkType(this.loginInfo, this.markTypeName).then(() => {
+            this.markTypeName = ''
+            this.$notify({
+              title: '成功',
+              message: '类别创建成功',
+              type: 'success',
+              duration: 2000
+            })
+            this.getMarkType()
+          })
+        }
+      },
+      deleteTypes() {
+        if(this.selectId) {
+          delMarkType(this.loginInfo, this.markTypeName).then(() => {
+          this.value = ''
+          this.markTypeName = ''
+          this.$notify({
+            title: '成功',
+            message: '类别删除成功',
+            type: 'error',
+            duration: 2000
+          })
+          this.getMarkType()
+          })
+        }
+      },
       getList() {
         this.listLoading = true
         documentList(this.listQuery,this.loginInfo).then(response => {
@@ -195,10 +261,8 @@
       listA: function () {
         let self = this;
         return self.list.filter(function (item) {
-          /* console.log(item) */
           return item.title.toLowerCase().indexOf(self.searchQuery.toLowerCase()) !== -1;
         })
-
       }
     }
   }
