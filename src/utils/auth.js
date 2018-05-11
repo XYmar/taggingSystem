@@ -9,7 +9,15 @@ export function getToken() {
 export function getRoles() {
   return Cookies.get(RolesKey)
 }
-
+export function setHidden(flag) {
+  return Cookies.set('Hiddenflag', flag)
+}
+export function getHidden() {
+  return Cookies.get('Hiddenflag')
+}
+export function removeHidden() {
+  return Cookies.remove('Hiddenflag')
+}
 export function setToken(token) {
   return Cookies.set(TokenKey, token)
 }

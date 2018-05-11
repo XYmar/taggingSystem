@@ -1,5 +1,5 @@
 import { login, logout, getInfo } from '@/api/login'
-import { getToken, setToken, removeToken, setRoles } from '@/utils/auth'
+import { getToken, setToken, removeToken, setRoles, removeHidden } from '@/utils/auth'
 import { getCookies } from '../../main'
 
 const user = {
@@ -39,13 +39,13 @@ const user = {
           /* setToken(data.token) */
           setToken(data.username)
           commit('SET_TOKEN', data.username)
-          if (username === 'admin') {
+          /* if (username === 'admin') {
             commit('SET_ROLES', 'admin')
             setRoles('admin')
           } else {
             commit('SET_ROLES', 'editor')
             setRoles('editor')
-          }
+          }*/
           console.log('settokensuccess')
           resolve()
         }).catch(error => {
@@ -63,7 +63,9 @@ const user = {
         getInfo(userName, passWord).then(response => {
           console.log('getInfoSuccess')
           const data = response.data
-          commit('SET_ROLES', data.username)
+          const roleA = [data.username]
+          commit('SET_ROLES', roleA)
+          setRoles('admin')
           commit('SET_NAME', data.username)
           /* commit('SET_AVATAR', data.avatar) */
           resolve(response)
@@ -92,6 +94,7 @@ const user = {
       return new Promise(resolve => {
         commit('SET_TOKEN', '')
         removeToken()
+        removeHidden()
         resolve()
       })
     }

@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import { getHidden } from '@/utils/auth'
 
 // in development-env not use lazy-loading, because lazy-loading too many pages will cause webpack hot update too slow. so only in production use lazy-loading;
 // detail: https://panjiachen.github.io/vue-element-admin-site/#/lazy-loading
-
+let flag = getHidden()
 Vue.use(Router)
 
 /* Layout */
@@ -127,6 +128,7 @@ export const constantRouterMap = [
   {
     path: '/conflict',
     component: Layout,
+    hidden: getHidden() === 'true' ? true : false,
     children: [
       {
         path: 'index',
@@ -160,7 +162,7 @@ export default new Router({
 })
 
 export const asyncRouterMap = [
-/*  {
+  /* {
     path: '/conflict',
     component: Layout,
     meta: {
@@ -172,7 +174,7 @@ export const asyncRouterMap = [
         path: 'index',
         name: 'Conflict',
         component: () => import('@/views/conflict/index'),
-        meta: { title: '冲突', icon: 'bug' }
+        meta: { title: '冲突', icon: 'bug', roles: ['admin'] }
       }
     ]
   }*/
