@@ -40,14 +40,14 @@
       </router-link>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <router-link to="/device/device">
+      <router-link to="/conflict/index">
         <div class='card-panel' @click="handleSetLineChartData('newVisitis')">
           <div class="card-panel-icon-wrapper icon-computer">
             <svg-icon icon-class="conflict1" class-name="card-panel-icon" />
           </div>
           <div class="card-panel-description">
             <div class="card-panel-text">冲突</div>
-            <count-to class="card-panel-num" :startVal="0" :endVal="list.reviewed" :duration="2600"></count-to>
+            <count-to class="card-panel-num" :startVal="0" :endVal="conflictLength" :duration="2600"></count-to>
           </div>
         </div>
       </router-link>
@@ -58,7 +58,7 @@
 
 <script>
 import CountTo from 'vue-count-to'
-import { countList } from '@/api/dashboard'
+import { countList, conflictList } from '@/api/dashboard'
 
 export default {
   components: {
@@ -67,11 +67,13 @@ export default {
   data() {
     return {
       tableKey: 0,
-      list: []
+      list: [],
+      conflictLength: 0
     }
   },
   created() {
     this.getList()
+    this.getConflictList()
   },
   methods: {
     handleSetLineChartData(type) {
@@ -81,8 +83,12 @@ export default {
       this.listLoading = true
       countList(this.listQuery).then(response => {
         this.list = response.data.data
-        console.log(this.list.all)
         this.listLoading = false
+      })
+    },
+    getConflictList () {
+      conflictList().then(response => {
+        this.conflictLength = response.data.data.length
       })
     }
   }
